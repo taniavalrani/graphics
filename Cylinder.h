@@ -6,7 +6,9 @@
 
 class Cylinder : public Shape {
 public:
-	Cylinder() {};
+	Cylinder() {
+
+	};
 	~Cylinder() {};
 
 	OBJ_TYPE getType() {
@@ -17,6 +19,8 @@ public:
 	void draw() {
 		drawTopFace();
 		drawBottomFace();
+		drawSideFace();
+
 	};
 
 	
@@ -26,9 +30,11 @@ public:
 
 
 private:
+
+	std::vector <float> face_vertices;
 	void drawTopFace(){
-		std::vector <float> top_face_vertices;
 		glBegin(GL_TRIANGLES);
+		std::vector <float> top_face_vertices;
 		/* adding top most origin*/
 		float pi = 3.141598f;
 		float radius = 0.5f;
@@ -59,8 +65,11 @@ private:
 		glVertex3f(top_face_vertices[index], top_face_vertices[index + 1], top_face_vertices[index + 2]);
 		glVertex3f(top_face_vertices[3], top_face_vertices[4], top_face_vertices[5]);
 		glVertex3f(0.0f, 0.5f, 0.0f);
-		glEnd();
+		face_vertices = top_face_vertices;
 		
+		
+		glEnd();
+
 	}
 	void drawBottomFace(){
 		std::vector <float> bottom_face_vertices;
@@ -98,6 +107,27 @@ private:
 
 		glEnd();
 		
+	}
+
+	void drawSideFace(){
+		glBegin(GL_TRIANGLES);
+		float width = 1 / m_segmentsY;
+		float curr_y = -0.5f;
+
+		for(int i = 0; i < m_segmentsX; i++) {
+			curr_y = width;
+			for(int j = 0; j < m_segmentsY; j++) {
+				glVertex3f(face_vertices[i+3], curr_y + width, face_vertices[i+5]);
+				glVertex3f(face_vertices[i+3], curr_y, face_vertices[i+5]);
+				glVertex3f(face_vertices[i+3], curr_y, face_vertices[i+5]);
+				glVertex3f(face_vertices[i+6], curr_y, face_vertices[i+5]);
+				curr_y += width;
+			}
+			
+		}
+
+		glEnd();
+
 	}
 
 	
