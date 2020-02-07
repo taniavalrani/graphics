@@ -5,7 +5,14 @@
 
 class Sphere : public Shape {
 public:
-	Sphere() {};
+	Sphere() {
+		top_point[0] = 0.0f;
+		top_point[1] = 0.5f;
+		top_point[2] = 0.0f;
+		bottom_point[0] = 0.0f;
+		bottom_point[1] = -0.5f;
+		bottom_point[2] = 0.0f;
+	};
 	~Sphere() {};
 
 	OBJ_TYPE getType() {
@@ -13,12 +20,15 @@ public:
 	}
 
 	void draw() {
+
 	};
 
 	void drawNormal() {
 	};
 
 private:
+	float top_point [3];
+	float bottom_point [3];
 };
 
 #endif

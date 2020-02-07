@@ -19,7 +19,7 @@ public:
 	void draw() {
 		drawTopFace();
 		drawBottomFace();
-		drawSideFace();
+		drawSideFaces();
 
 	};
 
@@ -45,6 +45,7 @@ private:
 		float curr_angle = slice_angle;
 		int index = 0;
 		for(int i = 0; i < m_segmentsX ; i++) {
+
 			top_face_vertices.push_back(radius * cos(curr_angle));
 			top_face_vertices.push_back(0.5f);
 			top_face_vertices.push_back(radius * sin(curr_angle));
@@ -109,23 +110,51 @@ private:
 		
 	}
 
-	void drawSideFace(){
+	void drawSideFaces(){
 		glBegin(GL_TRIANGLES);
-		float width = 1 / m_segmentsY;
-		float curr_y = -0.5f;
 
-		for(int i = 0; i < m_segmentsX; i++) {
-			curr_y = width;
-			for(int j = 0; j < m_segmentsY; j++) {
-				glVertex3f(face_vertices[i+3], curr_y + width, face_vertices[i+5]);
-				glVertex3f(face_vertices[i+3], curr_y, face_vertices[i+5]);
-				glVertex3f(face_vertices[i+3], curr_y, face_vertices[i+5]);
-				glVertex3f(face_vertices[i+6], curr_y, face_vertices[i+5]);
-				curr_y += width;
-			}
-			
+		std::vector <float> caps;
+		float radius = 0.5f;
+		float y = 0.5f;
+		float x, z;
+		float pi = 3.141598;
+		caps.push_back(0.0f);
+		caps.push_back(0.5f);
+		caps.push_back(0.0f);
+
+		for (int i = 0; i <= m_segmentsX; i++) {
+			x = radius * cos((2 * pi * i) / m_segmentsX);
+			z = radius * sin((2 * pi * i )/ m_segmentsX);
+			caps.push_back(x);
+			caps.push_back(y);
+			caps.push_back(z);
 		}
 
+
+		int ind = 3;
+
+		for (int i = 1; i <= m_segmentsX; i++) {
+			float width = 1.0f/ (float) m_segmentsY;
+			float top = width;
+			float bottom = 0;
+			
+			for (int j = 0; j < m_segmentsY; j++){
+
+				/* two right angle triangles make a square */
+				glVertex3f(caps[ind], caps[ind+1]-bottom, caps[ind+2]);
+				glVertex3f(caps[ind+3], caps[ind+4]-bottom, caps[ind+5]);
+				glVertex3f(caps[ind+3], caps[ind+4]-top, caps[ind+5]);
+
+				glVertex3f(caps[ind], caps[ind+1]-bottom, caps[ind+2]);
+				glVertex3f(caps[ind], caps[ind+1]-top, caps[ind+2]);
+				glVertex3f(caps[ind+3], caps[ind+4]-top, caps[ind+5]);
+
+				top += width;
+				bottom += width;
+			}
+			ind += 3;
+		}
+		
 		glEnd();
 
 	}
