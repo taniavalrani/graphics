@@ -149,18 +149,54 @@ void Cube::drawTopBottomFace(float start_x, float start_y, float start_z){
 void Cube::drawNormal() {
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.0f);
-    /* front face */
-    // glNormal3f(0.0f, 0.0f, 0.0f);
-    // glVertex3f(1.0f, 0.0f, 0.0f);
+    // /* front face */
+    // // glNormal3f(0.0f, 0.0f, 0.0f);
+    // // glVertex3f(1.0f, 0.0f, 0.0f);
+    // // glVertex3f(0.0f, 0.0f, 0.0f);
+    // // glVertex3f(0.0f, 1.0f, 0.0f);
+    // // glVertex3f(0.0f, 0.0f, 0.0f);
+    // // glVertex3f(0.0f, 0.0f, 1.0f);
     // glVertex3f(0.0f, 0.0f, 0.0f);
-    // glVertex3f(0.0f, 1.0f, 0.0f);
+    // glVertex3f(0.0f, 0.0f, -1.0f);
     // glVertex3f(0.0f, 0.0f, 0.0f);
-    // glVertex3f(0.0f, 0.0f, 1.0f);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 0.0f, -1.0f);
-    glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(1.0f, 0.0f, 1.0f);
+    // glVertex3f(1.0f, 0.0f, 1.0f);
 
     glEnd();
 	return;
 };
+
+
+/* copy and pasted from lab1*/
+void Cube::setNormal(float x1, float y1, float z1,
+	float x2, float y2, float z2,
+	float x3, float y3, float z3) {
+
+	float v1x, v1y, v1z;
+	float v2x, v2y, v2z;
+	float cx, cy, cz;
+
+	//find vector between x2 and x1
+	v1x = x1 - x2;
+	v1y = y1 - y2;
+	v1z = z1 - z2;
+
+	//find vector between x3 and x2
+	v2x = x2 - x3;
+	v2y = y2 - y3;
+	v2z = z2 - z3;
+
+	//cross product v1xv2
+
+	cx = v1y * v2z - v1z * v2y;
+	cy = v1z * v2x - v1x * v2z;
+	cz = v1x * v2y - v1y * v2x;
+
+	//normalize
+
+	float length = sqrt(cx * cx + cy * cy + cz * cz);
+	cx = cx / length;
+	cy = cy / length;
+	cz = cz / length;
+
+	glNormal3f(cx, cy, cz);
+}
