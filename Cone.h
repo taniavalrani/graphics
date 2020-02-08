@@ -84,14 +84,52 @@ private:
 				glVertex3f(tip_x, tip_y, tip_z);
 				glVertex3f(hat[i], hat[i + 1], hat[i + 2]);
 				glVertex3f(hat[i + 3], hat[i + 4], hat[i + 5]);
+
+			}
+		}
+		glEnd();
+	}
+	void drawBody() {
+		glBegin(GL_TRIANGLES);
+		std::vector <float> body;
+
+		float seg_height = (float)1 / (float)m_segmentsY;
+		float curr_seg_height = 0.0f;
+		float radius = 0.5f;
+		float curr_radius = 0.5f;
+		int curr_circle = m_segmentsY;
+
+		for (int i = 0; i < m_segmentsX; i++) {
+			for (int j = 0; j < m_segmentsY - 1; j++) {
+				float curr_seg_x = radius * cos((2 * pi * i) / m_segmentsX);
+				float curr_seg_z = radius * sin((2 * pi * i) / m_segmentsX);
+				float next_seg_x = radius * cos((2 * pi * (i + 1.0)) / m_segmentsX);
+				float next_seg_z = radius * sin((2 * pi * (i + 1.0)) / m_segmentsX);
 				
+
+				curr_circle--;
+				curr_radius = (curr_circle / m_segmentsY) * radius;
+
+				float curr_seg_x_above = radius * cos((2 * pi * i) / m_segmentsX);
+				float curr_seg_z_above = radius * sin((2 * pi * i) / m_segmentsX);
+				float next_seg_x_above = radius * cos((2 * pi * (i + 1.0)) / m_segmentsX);
+				float next_seg_z_above = radius * sin((2 * pi * (i + 1.0)) / m_segmentsX);
+
+				float seg_y_above = curr_seg_height + seg_height;
+
+
+
+				curr_seg_height = seg_y_above;
+				curr_radius = radius;
+				curr_circle = m_segmentsY;
+
 			}
 			
+			curr_seg_height = 0.0f;			
 
+			
 		}
 
-		
-		glEnd();
 	}
 };
 
