@@ -11,7 +11,7 @@ public:
 		tip_y = 0.5f;
 		tip_z = 0.0f;
 		radius = 0.5f;
-		pi = 3.141598;
+		pi = 3.141592;
 	};
 	~Cone() {};
 
@@ -92,7 +92,6 @@ private:
 	}
 	void drawBody() {
 		glBegin(GL_TRIANGLES);
-		std::vector <float> body;
 
 		float seg_height = (float)1 / (float)m_segmentsY;
 		float curr_seg_height = -0.5f;

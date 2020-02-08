@@ -26,7 +26,7 @@ MyGLCanvas::MyGLCanvas(int x, int y, int w, int h, const char *l) : Fl_Gl_Window
 	cylinder = new Cylinder();
 	cone = new Cone();
 	sphere = new Sphere();
-	//torus = new Torus();
+	special = new Special();
 	shape = cube;
 
 	shape->setSegments(segmentsX, segmentsY);
@@ -37,7 +37,7 @@ MyGLCanvas::~MyGLCanvas() {
 	delete cylinder;
 	delete cone;
 	delete sphere;
-	//delete torus;
+	delete special;
 }
 
 void MyGLCanvas::setShape(OBJ_TYPE type) {
@@ -56,7 +56,7 @@ void MyGLCanvas::setShape(OBJ_TYPE type) {
 		shape = sphere;
 		break;
 	case SHAPE_SPECIAL1:
-		//shape = torus;
+		shape = special;
 		break;
 	default:
 		shape = cube;
