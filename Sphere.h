@@ -57,8 +57,6 @@ public:
 			}
 
 		}
-		
-
 
 		drawHat(ordered_radii[0]);
 		drawCone(ordered_radii[0]); /* same radius as hat*/
@@ -208,7 +206,6 @@ private:
 				glVertex3f(curr_seg_x_above, seg_y_above, curr_seg_z_above);
 				glVertex3f(next_seg_x, curr_seg_height, next_seg_z);
 				glVertex3f(next_seg_x_above, seg_y_above, next_seg_z_above);
-
 
 				curr_seg_height = seg_y_above;
 				seg_y_above += seg_height;

@@ -43,6 +43,7 @@ protected:
 		normalizeNormal (glm::vec3(x, y, z));
 	};
 
+	//assigns nomralized normal to the point. Call that function on the normal of the given point
 	void normalizeNormal (glm::vec3 v) {
 		glm::vec3 tmpV = glm::normalize(v);
 		glNormal3f(tmpV.x, tmpV.y, tmpV.z);

@@ -20,8 +20,9 @@ public:
 	}
 
 		void draw() {
-		drawBase();
-		drawCone();
+			drawTop();
+		/*drawBase();
+		drawCone();*/
 
 	};
 
@@ -34,38 +35,21 @@ private:
 	float tip_z;
 	float radius;
 	float pi;
-	void drawBase(){
-		/* y is 0.5f since we are drawing the base */
-		float y = 0.0f;
+
+
+
+	void drawTop() {
 		glBegin(GL_TRIANGLES);
 
-		for (int i = 0; i < m_segmentsX; i++) {
-			float curr_seg_x = radius * cos((2 * pi * i) / m_segmentsX);
-			float curr_seg_z = radius * sin((2 * pi * i) / m_segmentsX);
-			float next_seg_x = radius * cos((2 * pi * (i + 1.0)) / m_segmentsX);
-			float next_seg_z = radius * sin((2 * pi * (i + 1.0)) / m_segmentsX);
-
-			/* center of base of base*/
-			glVertex3f(0, y, 0);
-			glVertex3f(curr_seg_x, y, curr_seg_z);
-			glVertex3f(next_seg_x, y, next_seg_z);
-
-		}
-
-		glEnd();
-	}
-
-	void drawCone(){
-		glBegin(GL_TRIANGLES);
 		std::vector <float> hat;
 
-		float side = 0.25f;
+		float side = 0.5f / (float)m_segmentsY;
 
 		for (int i = 0; i < m_segmentsX; i++) {
 			float x = side * cos((2.0f * pi * i) / m_segmentsX);
-			float y = 0.0f;
+			float y = 0.5f - 1.0f / m_segmentsY;
 			float z = side * sin((2.0f * pi * i) / m_segmentsX);
-			
+
 			hat.push_back(x);
 			hat.push_back(y);
 			hat.push_back(z);
@@ -74,22 +58,87 @@ private:
 
 		unsigned size = hat.size();
 
-		for (int i = 0; i < size; i+=3){
-			if(i == (size - 3)) { /* edge case for last */
+		for (int i = 0; i < size; i += 3) {
+			if (i == (size - 3)) { /* edge case for last */
 				glVertex3f(tip_x, tip_y, tip_z);
 				glVertex3f(hat[0], hat[1], hat[2]);
-				glVertex3f(hat[size - 3], hat[size - 2], hat[size-1]);
+				glVertex3f(hat[size - 3], hat[size - 2], hat[size - 1]);
+
+				/*setNormal(tip_x, tip_y, tip_z,
+					hat[0], hat[1], hat[2],
+					hat[size - 3], hat[size - 2], hat[size - 1]);*/
 
 			}
-			else{
+			else {
 				glVertex3f(tip_x, tip_y, tip_z);
 				glVertex3f(hat[i], hat[i + 1], hat[i + 2]);
 				glVertex3f(hat[i + 3], hat[i + 4], hat[i + 5]);
+
+				/*setNormal(hat[i + 3], hat[i + 4], hat[i + 5],
+					hat[i], hat[i + 1], hat[i + 2], tip_x, tip_y, tip_z);*/
 
 			}
 		}
 		glEnd();
 	}
+
+
+	//void drawBase(){
+	//	/* y is 0.5f since we are drawing the base */
+	//	float y = 0.0f;
+	//	glBegin(GL_TRIANGLES);
+
+	//	for (int i = 0; i < m_segmentsX; i++) {
+	//		float curr_seg_x = radius * cos((2 * pi * i) / m_segmentsX);
+	//		float curr_seg_z = radius * sin((2 * pi * i) / m_segmentsX);
+	//		float next_seg_x = radius * cos((2 * pi * (i + 1.0)) / m_segmentsX);
+	//		float next_seg_z = radius * sin((2 * pi * (i + 1.0)) / m_segmentsX);
+
+	//		/* center of base of base*/
+	//		glVertex3f(0, y, 0);
+	//		glVertex3f(curr_seg_x, y, curr_seg_z);
+	//		glVertex3f(next_seg_x, y, next_seg_z);
+
+	//	}
+
+	//	glEnd();
+	//}
+
+	//void drawCone(){
+	//	glBegin(GL_TRIANGLES);
+	//	std::vector <float> hat;
+
+	//	float side = 0.25f;
+
+	//	for (int i = 0; i < m_segmentsX; i++) {
+	//		float x = side * cos((2.0f * pi * i) / m_segmentsX);
+	//		float y = 0.0f;
+	//		float z = side * sin((2.0f * pi * i) / m_segmentsX);
+	//		
+	//		hat.push_back(x);
+	//		hat.push_back(y);
+	//		hat.push_back(z);
+
+	//	}
+
+	//	unsigned size = hat.size();
+
+	//	for (int i = 0; i < size; i+=3){
+	//		if(i == (size - 3)) { /* edge case for last */
+	//			glVertex3f(tip_x, tip_y, tip_z);
+	//			glVertex3f(hat[0], hat[1], hat[2]);
+	//			glVertex3f(hat[size - 3], hat[size - 2], hat[size-1]);
+
+	//		}
+	//		else{
+	//			glVertex3f(tip_x, tip_y, tip_z);
+	//			glVertex3f(hat[i], hat[i + 1], hat[i + 2]);
+	//			glVertex3f(hat[i + 3], hat[i + 4], hat[i + 5]);
+
+	//		}
+	//	}
+	//	glEnd();
+	//}
 
 
 

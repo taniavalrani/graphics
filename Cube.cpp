@@ -44,6 +44,7 @@ void Cube::draw() {
     drawTopBottomFace(-0.5, -0.5, -0.5);
     drawTopBottomFace(-0.5, 0.5, -0.5);
 
+	drawNormal_topBot(-0.5, 0.5, -0.5);
     return;
 };
 
@@ -62,6 +63,12 @@ void Cube::drawFrontBackFace(float start_x, float start_y, float start_z){
             glVertex3f(curr_x + width_x, curr_y, curr_z);
             glVertex3f(curr_x + width_x, curr_y + height_y, curr_z);
 
+			setNormal(
+				curr_x, curr_y, curr_z,
+				curr_x + width_x, curr_y, curr_z,
+				curr_x + width_x, curr_y + height_y, curr_z
+			);
+
             curr_x += width_x;
         } 
         curr_x = start_x;
@@ -69,7 +76,15 @@ void Cube::drawFrontBackFace(float start_x, float start_y, float start_z){
             glVertex3f(curr_x + width_x, curr_y + height_y, curr_z);
             glVertex3f(curr_x, curr_y + height_y, curr_z);
             glVertex3f(curr_x, curr_y, curr_z);
-            curr_x += width_x;
+
+			setNormal(
+				curr_x + width_x, curr_y + height_y, curr_z,
+				curr_x, curr_y + height_y, curr_z,
+				curr_x, curr_y, curr_z
+			);
+
+			curr_x += width_x;
+
         }
         curr_x = start_x;
         curr_y += height_y; 
@@ -103,6 +118,7 @@ void Cube::drawLeftRightFace(float start_x, float start_y, float start_z){
             glVertex3f(curr_x , curr_y + height_y, curr_z + width_x);
             glVertex3f(curr_x, curr_y + height_y, curr_z);
             glVertex3f(curr_x, curr_y, curr_z);
+
             curr_z += width_x;
         }
         curr_z = start_z;
@@ -129,13 +145,38 @@ void Cube::drawTopBottomFace(float start_x, float start_y, float start_z){
             glVertex3f(curr_x + width_x, curr_y, curr_z);
             glVertex3f(curr_x + width_x, curr_y , curr_z + height_y);
 
+			////draw normal for top face
+			//glBegin(GL_LINES);
+			//glColor3f(1.0, 0.0, 0.0);
+			//float l1 = 0.5;
+			//float l2 = 0.6;
+			//glVertex3f(curr_x + width_x, l1, curr_z);
+			//glVertex3f(curr_x + width_x, l2, curr_z + height_y);
+			//glEnd();
+			//glColor3f(1.0, 1.0, 1.0);
+			////end draw normal
+
             curr_x += width_x;
         } 
+		glBegin(GL_TRIANGLES);
+
         curr_x = start_x;
         for (int j = 0; j < Shape::m_segmentsX; j++) {
             glVertex3f(curr_x + width_x, curr_y , curr_z + height_y);
             glVertex3f(curr_x, curr_y , curr_z + height_y);
             glVertex3f(curr_x, curr_y, curr_z);
+
+			////draw normal for bot face
+			//glBegin(GL_LINES);
+			//glColor3f(1.0, 0.0, 0.0);
+			//float l1 = 0.5;
+			//float l2 = 0.6;
+			//glVertex3f(curr_x + width_x, l1, curr_z);
+			//glVertex3f(curr_x + width_x, l2, curr_z + height_y);
+			//glEnd();
+			//glColor3f(1.0, 1.0, 1.0);
+			////end draw normal
+
             curr_x += width_x;
         }
         curr_x = start_x;
@@ -146,21 +187,60 @@ void Cube::drawTopBottomFace(float start_x, float start_y, float start_z){
     glEnd();
 }
 
-void Cube::drawNormal() {
+void Cube::drawNormal_topBot(float start_x, float start_y, float start_z) {
     glBegin(GL_LINES);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    // /* front face */
-    // // glNormal3f(0.0f, 0.0f, 0.0f);
-    // // glVertex3f(1.0f, 0.0f, 0.0f);
-    // // glVertex3f(0.0f, 0.0f, 0.0f);
-    // // glVertex3f(0.0f, 1.0f, 0.0f);
-    // // glVertex3f(0.0f, 0.0f, 0.0f);
-    // // glVertex3f(0.0f, 0.0f, 1.0f);
-    // glVertex3f(0.0f, 0.0f, 0.0f);
-    // glVertex3f(0.0f, 0.0f, -1.0f);
-    // glVertex3f(0.0f, 0.0f, 0.0f);
-    // glVertex3f(1.0f, 0.0f, 1.0f);
+    glColor3f(1.0, 0.0, 0.0);
+    
+	float width_x = (float)1 / (float)Shape::m_segmentsX;
+	float height_y = (float)1 / (float)Shape::m_segmentsY;
 
+	float curr_x = start_x;
+	float curr_y = start_y;
+	float curr_z = start_z;
+
+	float l1 = 0.5f; //length of vector is 0.1
+	float l2 = 0.6f;
+
+		for (int i = 0; i < Shape::m_segmentsY; i++) {
+			/* for each X segment*/
+			for (int j = 0; j < Shape::m_segmentsX; j++) {
+
+				/*glVertex3f(curr_x + width_x, curr_y, curr_z);
+				glVertex3f(curr_x + width_x, curr_y, curr_z + height_y);
+				*/
+
+				float x1 = 0.5 * cos(2 * PI * j / m_segmentsX);
+				float z1 = 0.5 * sin(2 * PI * j / m_segmentsX);
+				float x2 = 0.5 * cos(2 * PI * j / m_segmentsX);
+				float z2 = 0.5 * sin(2 * PI * j / m_segmentsX);
+
+				//top
+				glBegin(GL_LINES);
+				glVertex3f(x1, l1, z1);
+				glVertex3f(x2, l2, z2);
+				glEnd();
+
+
+				curr_x += width_x;
+			}
+		}
+	/*glVertex3f(-1, 0.5, 0);
+	glVertex3f(-1, 0.6, 0);*/
+
+
+	
+	/*front face */
+    //glNormal3f(0.0f, 0.0f, 0.0f);
+  /*  glVertex3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(0.0f, 0.0f, -1.0f);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    glVertex3f(1.0f, 0.0f, 1.0f);
+*/
     glEnd();
 	return;
 };

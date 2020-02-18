@@ -15,7 +15,7 @@ public:
 
 	
 
-	void drawNormal();
+	void drawNormal_topBot(float start_x, float start_y, float start_z);
 
 private:
 	void drawFrontBackFace(float start_x, float start_y, float start_z);
